@@ -4,13 +4,21 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #070721;
+  --btn: #0d5eff;
+  --primary: #ebebf8;
+  --secondary: #51f3ff;
+  --ternary: #ff710b;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #08082e;
     --foreground: #ededed;
+    --btn: #0d5eff;
+    --primary: #ebebf8;
+    --secondary: #51f3ff;
+    --ternary: #ff710b;
   }
 }
 

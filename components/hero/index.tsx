@@ -48,7 +48,9 @@ export default function Hero() {
           </div>
           {/* Buttons */}
           <div className="mt-8 gap-3 flex justify-center">
-            <Button size={"lg"} variant={"destructive"}>Get started</Button>
+            <Button size={"lg"} variant={"destructive"}>
+              Get started
+            </Button>
             <Button size={"lg"} variant={"outline"}>
               Learn more
             </Button>

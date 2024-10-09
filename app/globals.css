@@ -32,74 +32,71 @@ body {
   :root {
     --background: 220, 16%, 96%;
     --foreground: 222, 20%, 16%;
-  
+
     --muted: 215, 14%, 80%;
     --muted-foreground: 222, 20%, 16%;
-  
+
     --popover: 220, 16%, 96%;
     --popover-foreground: 222, 20%, 16%;
-  
+
     --border: 222, 20%, 70%;
     --input: 222, 20%, 70%;
-  
+
     --card: 220, 16%, 96%;
     --card-foreground: 222, 20%, 16%;
-  
+
     --primary: 222, 20%, 70%;
     --primary-foreground: 220, 16%, 96%;
-  
+
     --secondary: 215, 14%, 80%;
     --secondary-foreground: 222, 20%, 16%;
-  
+
     --accent: 215, 14%, 80%;
     --accent-foreground: 222, 20%, 16%;
-  
+
     --destructive: 0, 80%, 50%;
     --destructive-foreground: 222, 20%, 16%;
-  
+
     --ring: 222, 20%, 70%;
   }
-  
 
   .dark {
     --background: 220, 16%, 16%;
     --foreground: 222, 20%, 96%;
-  
+
     --muted: 215, 14%, 25%;
     --muted-foreground: 222, 20%, 96%;
-  
+
     --popover: 220, 16%, 16%;
     --popover-foreground: 222, 20%, 96%;
-  
+
     --border: 222, 20%, 40%;
     --input: 222, 20%, 40%;
-  
+
     --card: 220, 16%, 16%;
     --card-foreground: 222, 20%, 96%;
-  
+
     --primary: 222, 20%, 40%;
     --primary-foreground: 220, 16%, 16%;
-  
+
     --secondary: 215, 14%, 25%;
     --secondary-foreground: 222, 20%, 96%;
-  
+
     --accent: 215, 14%, 25%;
     --accent-foreground: 222, 20%, 96%;
-  
+
     --destructive: 0, 80%, 50%;
     --destructive-foreground: 222, 20%, 96%;
-  
+
     --ring: 222, 20%, 40%;
   }
-  
-
 
   .dark3 {
     /* Name: custom color palette
        Author: Ilias Ism
        URL: https://gradient.page */
 
-    --gradient: linear-gradient(to top left,#e43a15,#e65245);
+    --gradient: linear-gradient(to top left, #e43a15, #e65245);
 
     --background: 11 53.949999999999996% 3.92%;
     --foreground: 11 8.299999999999999% 97.45%;
@@ -129,8 +126,7 @@ body {
     --destructive-foreground: 11 8.299999999999999% 97.45%;
 
     --ring: 11 83% 49%;
-}
-
+  }
 
   .dark2 {
     --background: 222.2 84% 4.9%;
@@ -159,10 +155,6 @@ body {
     --chart-5: 340 75% 55%;
   }
 }
-
-
-
-
 
 @layer base {
   * {

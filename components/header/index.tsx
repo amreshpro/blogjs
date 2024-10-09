@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useTheme } from "next-themes";
 import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
@@ -15,7 +15,11 @@ export default function Header() {
   if (!mounted) return null;
   return (
     <div>
-      <Button variant={"destructive"} className="rounded-lg m-1"  onClick={() => setTheme(theme == "dark" ? "light" : "dark")}>
+      <Button
+        variant={"destructive"}
+        className="rounded-lg m-1"
+        onClick={() => setTheme(theme == "dark" ? "light" : "dark")}
+      >
         {theme == "dark" ? "light" : "dark"}
       </Button>
     </div>

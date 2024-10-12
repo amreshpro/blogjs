@@ -1,5 +1,5 @@
 import { logger } from "../../utils/logging";
-import type { NextFunction, Request } from "express";
+import type { NextFunction, Request, Response } from "express";
 
 export default function loggerMiddleware(
   req: Request,
@@ -7,5 +7,5 @@ export default function loggerMiddleware(
   next: NextFunction,
 ) {
   logger.info(`${req.method} ${req.path}`);
-  next();
+  return next();
 }

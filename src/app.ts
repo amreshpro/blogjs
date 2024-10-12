@@ -1,6 +1,7 @@
 import swaggerUi from "swagger-ui-express";
 import express, { urlencoded, type NextFunction } from "express";
 import swaggerSpec from "./config/swagger";
+import loggerMiddleware from "./middleware/logger";
 
 const app = express();
 
@@ -12,13 +13,15 @@ app.use(urlencoded({ extended: true }));
 
 // Swagger UI route
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// logger middleware
+app.use(loggerMiddleware);
 
 /**
  * @swagger
  * /:
- * get:
- * summary: hello
- * description: hello description api
+ *  get:
+ *   summary: hello
+ *   description: hello description api
  */
 app.get("/", (_req, res) => {
   res.send("Hello World!");

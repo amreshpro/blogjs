@@ -1,4 +1,4 @@
-import type{ Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 import createError from "http-errors";
 
 // Global error handling middleware
@@ -6,7 +6,7 @@ export function globalErrorHandler(
   err: any, // `err` can be of any type
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
   // Agar error `http-errors` se bana hua hai, to use handle karo, varna 500 error throw karo
   const statusCode = err.status || 500;

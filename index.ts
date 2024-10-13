@@ -2,12 +2,14 @@ import Bun from "bun";
 import app from "./src/app";
 import { logger } from "./src/utils/logging";
 import EnvConfig from "./src/config/EnvConfig";
+import Database from "./src/db/index";
 
 const startServer = async () => {
   const PORT = EnvConfig.PORT;
 
   try {
     //   await connectDB();
+    await Database.connect();
 
     app
       .listen(PORT, () => {

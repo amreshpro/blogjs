@@ -1,16 +1,16 @@
 import Bun from "bun";
 import app from "./src/app";
 import { logger } from "./src/utils/logging";
+import EnvConfig from "./src/config/EnvConfig";
 
 const startServer = async () => {
-  const PORT = Bun.env.PORT || 5503;
+  const PORT = EnvConfig.PORT;
 
   try {
     //   await connectDB();
 
     app
       .listen(PORT, () => {
-        console.log(`Listening on  http://localhost:${PORT}`);
         logger.info(`Listening on  http://localhost:${PORT}`);
       })
       .on("error", (err) => {
@@ -18,7 +18,7 @@ const startServer = async () => {
         process.exit(1);
       });
   } catch (err) {
-    //   logger.error("Error happened: ", err.message);
+    logger.error("Error happened: ", err.message);
     process.exit(1);
   }
 };

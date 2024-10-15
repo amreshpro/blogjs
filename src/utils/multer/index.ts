@@ -1,23 +1,25 @@
-import express from "express";
-import PostController from "../../controller/PostController";
 import multer from "multer";
 import path from "path";
+import createError from "http-errors";
 
-// Configure Multer to upload images to the "uploads" folder
+// Configure Multer to store uploaded files
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/");
+    const uploadPath = "uploads/";
+    cb(null, uploadPath); // Define the upload path
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // Save file with timestamp and its extension
+    const uniqueSuffix = Date.now() + path.extname(file.originalname); // Create unique filename
+    cb(null, uniqueSuffix); // Save file with timestamp and extension
   },
 });
 
+// Multer configuration for file uploads
 export const uploadImage = multer({
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB file size limit
   fileFilter: (req, file, cb) => {
-    const fileTypes = /jpeg|jpg|png/;
+    const fileTypes = /jpeg|jpg|png/; // Allowed file types
     const extname = fileTypes.test(
       path.extname(file.originalname).toLowerCase(),
     );
@@ -26,14 +28,7 @@ export const uploadImage = multer({
     if (extname && mimetype) {
       return cb(null, true);
     } else {
-      cb(new Error("Images only!"));
+      cb(createError(400, "Only image files (jpeg, jpg, png) are allowed"));
     }
   },
-});
-
-// const postRouter = express.Router();
-
-// // POST route to create a post with an image
-// postRouter.post("/", upload.single("image"), PostController.createPost);
-
-// export default postRouter;
+}).single("image"); // Specify that we are expecting a single file with the field name "image"

@@ -1,18 +1,21 @@
-import express, { Request, Response, NextFunction } from "express";
+import express from "express";
 import UserController from "../../controller/UserController";
 
 const userRouter = express.Router();
 
-userRouter.post(
-  "/",
-  async (req: Request, res: Response, next: NextFunction) => {
-    await UserController.createUser(req, res, next);
-  },
-);
+// Create user route
+userRouter.post("/", UserController.createUser);
 
-// GET request to retrieve all users
-userRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
-  await UserController.getAllUser(req, res, next);
-});
+// Get all users route
+userRouter.get("/", UserController.getAllUsers);
+
+// Get single user by ID route
+userRouter.get("/:id", UserController.getUserById);
+
+// Update user by ID route
+userRouter.put("/:id", UserController.updateUser);
+
+// Delete user by ID route
+userRouter.delete("/:id", UserController.deleteUser);
 
 export default userRouter;

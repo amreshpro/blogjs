@@ -1,55 +1,138 @@
-import bcrypt from "bcryptjs";
-import { NextFunction, Request, Response } from "express";
 import createError from "http-errors";
 import User from "../model/User";
-import { logger } from "../utils/logging";
+import { NextFunction, Request, Response } from "express";
+import bcrypt from "bcryptjs"; // For password hashing
 import validateUserData from "../utils/validations/user";
 
 export default class UserController {
+  // Create a new user
   static async createUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const user = req.body;
+      const { name, email, password, age, city, country } = req.body;
 
-      // Validate user format
-      const isUserVerified = validateUserData(user);
+      // Validate user data
+      const userData = { name, email, password, age, city, country };
+      const isUserVerified = validateUserData(userData);
       if (!isUserVerified) {
-        throw createError(400, "Invalid user credentials");
+        throw createError(400, "Invalid user data.");
       }
 
-      // Check if user already exists
-      const isAlreadyRegistered = await User.findOne({ email: user.email });
-      logger.info(isAlreadyRegistered);
-      if (isAlreadyRegistered) {
-        throw createError(409, "User already registered.");
-      }
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(password, 10);
 
-      // Hash password
-      const hashPassword = await bcrypt.hash(user.password, 10);
-      user.password = hashPassword;
+      // Create a new user
+      const newUser = new User({
+        name,
+        email,
+        password: hashedPassword, // Store the hashed password
+        age,
+        city,
+        country,
+      });
+      await newUser.save();
 
-      // Create the user
-      const newUser = await User.create(user);
-      newUser.save();
-      logger.info("User created successfully", newUser);
-
-      return res.status(201).json({
-        message: "User successfully saved in our database.",
-        user: newUser,
+      res.status(201).json({
+        message: "User successfully created.",
+        user: {
+          id: newUser._id,
+          name: newUser.name,
+          email: newUser.email,
+          age: newUser.age,
+          city: newUser.city,
+          country: newUser.country,
+        },
       });
     } catch (error) {
-      logger.error("Error while saving user:", error); // Log the error
-      next(error); // Pass the error to the next middleware (error handler)
+      next(error);
     }
   }
 
-  static async getAllUser(_req: Request, res: Response, next: NextFunction) {
+  // Retrieve all users
+  static async getAllUsers(req: Request, res: Response, next: NextFunction) {
     try {
-      const users = await User.find({});
-      logger.info(users);
-      return res.status(200).json(users || []);
+      const users = await User.find().select("-password"); // Exclude password from the response
+      res.status(200).json(users);
     } catch (error) {
-      logger.error("Error while fetching users:", error); // Log the error
-      next(error); // Pass the error to the next middleware (error handler)
+      next(error);
+    }
+  }
+
+  // Retrieve a single user by ID
+  static async getUserById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params; // Get user ID from URL parameters
+      const user = await User.findById(id).select("-password");
+
+      if (!user) {
+        throw createError(404, "User not found.");
+      }
+
+      res.status(200).json(user);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // Update a user by ID
+  static async updateUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const { name, email, password, age, city, country } = req.body;
+
+      // Validate user data
+      const userData = { name, email, password, age, city, country };
+      const isUserVerified = validateUserData(userData);
+      if (!isUserVerified) {
+        throw createError(400, "Invalid user data.");
+      }
+
+      // Hash the new password if provided
+      const hashedPassword = password
+        ? await bcrypt.hash(password, 10)
+        : undefined;
+
+      // Update user
+      const updatedUser = await User.findByIdAndUpdate(
+        id,
+        {
+          name,
+          email,
+          password: hashedPassword, // Update password only if provided
+          age,
+          city,
+          country,
+        },
+        { new: true }, // Return the updated document
+      ).select("-password");
+
+      if (!updatedUser) {
+        throw createError(404, "User not found.");
+      }
+
+      res.status(200).json({
+        message: "User updated successfully.",
+        user: updatedUser,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // Delete a user by ID
+  static async deleteUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const deletedUser = await User.findByIdAndDelete(id);
+
+      if (!deletedUser) {
+        throw createError(404, "User not found.");
+      }
+
+      res.status(200).json({
+        message: "User deleted successfully.",
+      });
+    } catch (error) {
+      next(error);
     }
   }
 }

@@ -1,64 +1,50 @@
-// import createError from 'http-errors';
-// import Post from '../model/Post';
-// import { NextFunction } from 'express';
+import createError from "http-errors";
+import Post from "../model/Post";
+import { NextFunction, Request, Response } from "express";
+import validatePostData from "../utils/validations/posts";
+import { logger } from "../utils/logging";
 
-// // Create a new post
-// export const createPost = async (req:Request, res:Response, next:NextFunction) => {
-//   try {
-//     const { title, content } = req.body;
-//     const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+export default class PostController {
+  // Create a new post
+  static async createPost(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { title, content } = req.body;
 
-//     const newPost = new Post({
-//       title,
-//       content,
-//       imageUrl,
-//       user: req.user._id,  // Save logged-in user ID
-//     });
+      // Check if file is uploaded
+      if (!req.file) {
+        throw createError(400, "Image is required");
+      }
 
-//     await newPost.save();
-//     res.status(201).json({ message: 'Post created successfully', post: newPost });
-//   } catch (error) {
-//     next(createError(500, error.message));
-//   }
-// };
+      // Validate post data (excluding imageUrl, as that's uploaded)
+      const post = {
+        title,
+        content,
+        imageUrl: req.file.path,
+        user: req.user._id,
+      };
+      const isPostVerified = validatePostData(post);
 
-// // Update or delete user-specific posts
-// export const updatePost = async (req, res, next) => {
-//   try {
-//     const post = await Post.findById(req.params.id);
-//     if (!post) return res.status(404).json({ message: 'Post not found' });
+      if (!isPostVerified) {
+        throw createError(400, "Invalid post data.");
+      }
 
-//     if (post.user.toString() !== req.user._id.toString()) {
-//       return res.status(403).json({ message: 'You can only edit your own posts' });
-//     }
+      // Create the new post with the uploaded image URL
+      const newPost = new Post({
+        title,
+        content,
+        imageUrl: req.file.path, // Save the image URL from multer
+        user: req.user._id, // Assuming you have user information in the request
+      });
 
-//     post.title = req.body.title || post.title;
-//     post.content = req.body.content || post.content;
-
-//     if (req.file) {
-//       post.imageUrl = `/uploads/${req.file.filename}`;  // Update image if uploaded
-//     }
-
-//     await post.save();
-//     res.status(200).json({ message: 'Post updated successfully', post });
-//   } catch (error) {
-//     next(createError(500, error.message));
-//   }
-// };
-
-// // Delete a post
-// export const deletePost = async (req, res, next) => {
-//   try {
-//     const post = await Post.findById(req.params.id);
-//     if (!post) return res.status(404).json({ message: 'Post not found' });
-
-//     if (post.user.toString() !== req.user._id.toString()) {
-//       return res.status(403).json({ message: 'You can only delete your own posts' });
-//     }
-
-//     await post.remove();
-//     res.status(200).json({ message: 'Post deleted successfully' });
-//   } catch (error) {
-//     next(createError(500, error.message));
-//   }
-// };
+      await newPost.save();
+      logger.info("Post Created Successfully");
+      return res.status(201).json({
+        message: "Post successfully saved in our database.",
+        post: newPost,
+      });
+    } catch (error) {
+      logger.error("Error while saving post:", error); // Log the error
+      next(error);
+    }
+  }
+}

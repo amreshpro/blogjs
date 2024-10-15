@@ -3,11 +3,10 @@ import UserController from "../../controller/UserController";
 
 const userRouter = express.Router();
 
-// POST request to save a new user
 userRouter.post(
   "/",
   async (req: Request, res: Response, next: NextFunction) => {
-    await UserController.saveUser(req, res, next);
+    await UserController.createUser(req, res, next);
   },
 );
 

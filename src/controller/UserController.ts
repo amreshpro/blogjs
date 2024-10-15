@@ -1,19 +1,19 @@
-import createError from "http-errors";
 import bcrypt from "bcryptjs";
-import { Request, Response, NextFunction } from "express";
-import { verifyUserFormat } from "../utils/user";
+import { NextFunction, Request, Response } from "express";
+import createError from "http-errors";
 import User from "../model/User";
 import { logger } from "../utils/logging";
+import validateUserData from "../utils/validations/user";
 
 export default class UserController {
-  static async saveUser(req: Request, res: Response, next: NextFunction) {
+  static async createUser(req: Request, res: Response, next: NextFunction) {
     try {
       const user = req.body;
 
       // Validate user format
-      const isUserFormatted = verifyUserFormat(user);
-      if (!isUserFormatted) {
-        throw createError(400, "Invalid user format.");
+      const isUserVerified = validateUserData(user);
+      if (!isUserVerified) {
+        throw createError(400, "Invalid user credentials");
       }
 
       // Check if user already exists
@@ -29,6 +29,7 @@ export default class UserController {
 
       // Create the user
       const newUser = await User.create(user);
+      newUser.save();
       logger.info("User created successfully", newUser);
 
       return res.status(201).json({

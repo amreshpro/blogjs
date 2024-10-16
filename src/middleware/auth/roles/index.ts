@@ -1,8 +1,9 @@
 import { NextFunction, Response } from "express";
 import createError from "http-errors";
 import { AuthRequest, UserRole } from "../../../types";
+import { logger } from "../../../utils/logging";
 
-export const authorize = (roles: UserRole[]) => {
+export const authorize = (roles: UserRole[] = [UserRole.User]) => {
   return (req: AuthRequest, res: Response, next: NextFunction) => {
     // Check if req.user exists (user must be authenticated)
     if (!req.user) {
@@ -13,6 +14,11 @@ export const authorize = (roles: UserRole[]) => {
 
     // Check if the user's role is included in the allowed roles
     if (!roles.includes(userRole)) {
+      console.log(req.user);
+      logger.info(roles);
+      logger.info(userRole);
+      logger.info(roles.includes(userRole));
+
       return next(
         createError(
           403,

@@ -98,7 +98,10 @@ class PostController {
       }
 
       // Check if user is admin or owner of the post
-      if (req.user.role === "ADMIN" || post.user.toString() === req.user.id) {
+      if (
+        req.user.role.toLowerCase() === "admin" ||
+        post.user.toString() === req.user.id
+      ) {
         const updatedPost = await Post.findByIdAndUpdate(postId, postData, {
           new: true,
         });
@@ -139,7 +142,10 @@ class PostController {
       }
 
       // Check if user is admin or owner of the post
-      if (req.user.role === "ADMIN" || post.user.toString() === req.user.id) {
+      if (
+        req.user.role.toLowerCase() === "admin" ||
+        post.user.toString() === req.user.id
+      ) {
         await Post.findByIdAndDelete(postId);
         res.json({
           status: "success",

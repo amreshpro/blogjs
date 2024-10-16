@@ -2,8 +2,8 @@ import { Request } from "express";
 
 // User roles enumeration
 export enum UserRole {
-  Admin = "ADMIN",
-  User = "USER",
+  Admin = "admin",
+  User = "user",
 }
 
 // User interface with ID and role

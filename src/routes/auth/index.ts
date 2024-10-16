@@ -34,8 +34,7 @@ authRouter.post(
       if (!email || !password) {
         throw createError(400, "Email and password are required");
       }
-
-      await AuthController.login(req, res, next);
+      return await AuthController.login(req, res, next);
     } catch (error) {
       next(error);
     }

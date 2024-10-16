@@ -5,6 +5,7 @@ import loggerMiddleware from "./middleware/logger";
 import globalErrorHandler from "./middleware/errors";
 import userRouter from "./routes/user";
 import postRouter from "./routes/post";
+import authRouter from "./routes/auth";
 
 const app = express();
 
@@ -30,7 +31,7 @@ app.get("/", (_req, res) => {
 // Routes
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/post", postRouter);
-
+app.use("/api/v1/auth", authRouter);
 // global error handler ( must be after routes)
 app.use(globalErrorHandler);
 

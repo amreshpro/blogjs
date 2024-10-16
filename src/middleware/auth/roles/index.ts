@@ -2,13 +2,17 @@ import { NextFunction, Response } from "express";
 import createError from "http-errors";
 import { AuthRequest, UserRole } from "../../../types";
 
-// Adjusted the type of roles to accept an array of UserRole
 export const authorize = (roles: UserRole[]) => {
   return (req: AuthRequest, res: Response, next: NextFunction) => {
-    const userRole = req.user?.role; // Use optional chaining to safely access user role
+    // Check if req.user exists (user must be authenticated)
+    if (!req.user) {
+      return next(createError(401, "Unauthorized: User not authenticated"));
+    }
 
-    // Check if userRole is defined and matches the allowed roles
-    if (!userRole || !roles.includes(userRole)) {
+    const userRole = req.user.role; // Assumes user is authenticated and role exists
+
+    // Check if the user's role is included in the allowed roles
+    if (!roles.includes(userRole)) {
       return next(
         createError(
           403,
@@ -17,6 +21,6 @@ export const authorize = (roles: UserRole[]) => {
       );
     }
 
-    next();
+    next(); // Proceed to the next middleware or route handler
   };
 };

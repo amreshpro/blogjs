@@ -2,19 +2,19 @@ import { Request } from "express";
 
 // User roles enumeration
 export enum UserRole {
-  Admin = "admin",
-  User = "user",
+  Admin = "ADMIN",
+  User = "USER",
 }
 
 // User interface with ID and role
-interface User {
+export interface User {
   id: string;
   role: UserRole;
 }
 
 // AuthRequest interface extending the base Request with a user property
 export interface AuthRequest extends Request {
-  user: User; // User property added to request
+  user?: User; // User property added to request
 }
 
 // CreatePostRequest interface, extending AuthRequest
@@ -23,6 +23,7 @@ export interface CreatePostRequest extends AuthRequest {
     title: string;
     content: string;
     imageUrl?: string; // Optional field
+    user: string;
   };
 }
 

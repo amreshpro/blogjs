@@ -20,7 +20,7 @@ class PostController {
       title: req.body.title,
       content: req.body.content,
       imageUrl: req.body.imageUrl,
-      user: req.user.id, // Assuming user ID is available in the request
+      user: req.user?.id,
     };
 
     // Validate post data
@@ -93,8 +93,12 @@ class PostController {
         throw createError(404, "Post not found");
       }
 
+      if (!req.user) {
+        throw createError(401, "Unauthorized");
+      }
+
       // Check if user is admin or owner of the post
-      if (req.user.role === "admin" || post.user.toString() === req.user.id) {
+      if (req.user.role === "ADMIN" || post.user.toString() === req.user.id) {
         const updatedPost = await Post.findByIdAndUpdate(postId, postData, {
           new: true,
         });
@@ -130,9 +134,12 @@ class PostController {
       if (!post) {
         throw createError(404, "Post not found");
       }
+      if (!req.user) {
+        throw createError(401, "Unauthorized");
+      }
 
       // Check if user is admin or owner of the post
-      if (req.user.role === "admin" || post.user.toString() === req.user.id) {
+      if (req.user.role === "ADMIN" || post.user.toString() === req.user.id) {
         await Post.findByIdAndDelete(postId);
         res.json({
           status: "success",

@@ -6,7 +6,7 @@ import { logger } from "../../logging";
 export const postValidationSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters long"), // Minimum 3 characters for title
   content: z.string().min(10, "Content must be at least 10 characters long"), // Minimum 10 characters for content
-  imageUrl: z.string().url("Invalid image URL"), // Must be a valid URL for the image
+  // imageUrl: z.string().url("Invalid image URL"), // Must be a valid URL for the image
   user: z.string().refine((id) => mongoose.Types.ObjectId.isValid(id), {
     message: "Invalid user ID",
   }), // Custom validation to check if user ID is a valid MongoDB ObjectId

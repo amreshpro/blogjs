@@ -6,6 +6,7 @@ import { logger } from "../../../utils/logging";
 export const authorize = (roles: UserRole[] = [UserRole.User]) => {
   return (req: AuthRequest, res: Response, next: NextFunction) => {
     // Check if req.user exists (user must be authenticated)
+    logger.info("user auth status", req.user);
     if (!req.user) {
       return next(createError(401, "Unauthorized: User not authenticated"));
     }
@@ -14,11 +15,6 @@ export const authorize = (roles: UserRole[] = [UserRole.User]) => {
 
     // Check if the user's role is included in the allowed roles
     if (!roles.includes(userRole)) {
-      console.log(req.user);
-      logger.info(roles);
-      logger.info(userRole);
-      logger.info(roles.includes(userRole));
-
       return next(
         createError(
           403,

@@ -6,12 +6,13 @@ import { AuthRequest, User } from "../../types";
 
 export const authenticateJWT = (
   req: AuthRequest,
-  res: Response,
+  _res: Response,
   next: NextFunction,
 ) => {
   try {
     const authHeader = req.headers.authorization;
-
+    console.log("AuthJWT Start");
+    console.log(req);
     // Check if Authorization header is missing or invalid
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return next(
@@ -31,6 +32,7 @@ export const authenticateJWT = (
       const user = decodedToken as User;
 
       // Attach user object to the request
+
       req.user = user;
       next(); // Proceed to the next middleware/route
     });

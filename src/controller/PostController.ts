@@ -28,7 +28,7 @@ class PostController {
     if (!isValid) {
       return next(createError(400, "Invalid post data"));
     }
-
+    console.log();
     try {
       const newPost = new Post(postData);
       await newPost.save();

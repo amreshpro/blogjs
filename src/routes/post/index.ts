@@ -3,12 +3,14 @@ import PostController from "../../controller/PostController";
 import { authenticateJWT } from "../../middleware/jwt";
 import { authorize } from "../../middleware/auth/roles";
 import { UserRole } from "../../types";
+import { uploadImage } from "../../utils/multer";
 
 const postRouter = Router();
 
 postRouter.post(
   "/",
   authenticateJWT,
+  uploadImage,
   authorize([UserRole.User, UserRole.Admin]),
   PostController.createPost,
 );

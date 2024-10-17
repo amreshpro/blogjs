@@ -73,9 +73,13 @@ export default class AuthController {
       }
 
       // Generate JWT token
-      const token = jwt.sign({ id: user._id }, EnvConfig.JWT_SECRET!, {
-        expiresIn: "1h",
-      });
+      const token = jwt.sign(
+        { id: user._id, role: user.role },
+        EnvConfig.JWT_SECRET!,
+        {
+          expiresIn: "1h",
+        },
+      );
 
       res.status(200).json({
         message: "Login successful.",

@@ -11,8 +11,7 @@ export const authenticateJWT = (
 ) => {
   try {
     const authHeader = req.headers.authorization;
-    console.log("AuthJWT Start");
-    console.log(req);
+
     // Check if Authorization header is missing or invalid
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return next(

@@ -1,11 +1,13 @@
 import swaggerUi from "swagger-ui-express";
-import express, { urlencoded, type NextFunction } from "express";
+import express, { urlencoded } from "express";
 import swaggerSpec from "./config/swagger";
 import loggerMiddleware from "./middleware/logger";
 import globalErrorHandler from "./middleware/errors";
 import userRouter from "./routes/user";
 import postRouter from "./routes/post";
 import authRouter from "./routes/auth";
+import path from "path";
+import cors from "cors";
 
 const app = express();
 
@@ -16,6 +18,8 @@ app.use(urlencoded({ extended: true }));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // logger middleware
 app.use(loggerMiddleware);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(cors());
 
 /**
  * @swagger

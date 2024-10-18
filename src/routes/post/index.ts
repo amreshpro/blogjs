@@ -4,14 +4,28 @@ import { authenticateJWT } from "../../middleware/jwt";
 import { authorize } from "../../middleware/auth/roles";
 import { UserRole } from "../../types";
 import { uploadImage } from "../../utils/multer";
+import { logger } from "../../utils/logging";
 
 const postRouter = Router();
 
 postRouter.post(
   "/",
   authenticateJWT,
-  uploadImage,
   authorize([UserRole.User, UserRole.Admin]),
+  uploadImage.single("image"),
+  (req, res, next) => {
+    // Check if there's an error from Multer
+    if (req.fileValidationError) {
+      return res.status(400).json({ message: req.fileValidationError });
+    }
+    console.log("Multer middleware executed:", req.file); // Check if file is received
+    next(); // Pass control to the next middleware
+  },
+  (req, res, next) => {
+    logger.info("Multer middleware executed:", req.file);
+    console.log("Multer middleware executed:", req.file); // Check if file is received
+    next(); // Pass control to the next middleware
+  },
   PostController.createPost,
 );
 postRouter.get(

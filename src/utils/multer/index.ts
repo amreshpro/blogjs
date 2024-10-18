@@ -26,9 +26,10 @@ export const uploadImage = multer({
     const mimetype = fileTypes.test(file.mimetype);
 
     if (extname && mimetype) {
-      return cb(null, true);
+      cb(null, true);
     } else {
+      // Pass the error to the next middleware
       cb(createError(400, "Only image files (jpeg, jpg, png) are allowed"));
     }
   },
-}).single("image"); // Specify that we are expecting a single file with the field name "image"
+});

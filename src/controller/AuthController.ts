@@ -82,7 +82,7 @@ export default class AuthController {
       );
 
       res.status(200).json({
-        message: "Login successful.",
+        message: "Login Successful.",
         token,
         user: {
           id: user._id,

@@ -16,10 +16,14 @@ class PostController {
     res: Response,
     next: NextFunction,
   ) {
+    logger.info("post create ---");
+    console.log(req.body);
+    console.log(req.file);
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
     const postData = {
       title: req.body.title,
       content: req.body.content,
-      imageUrl: req.body.imageUrl,
+      imageUrl: imageUrl,
       user: req.user?.id,
     };
 
@@ -28,7 +32,6 @@ class PostController {
     if (!isValid) {
       return next(createError(400, "Invalid post data"));
     }
-    console.log();
     try {
       const newPost = new Post(postData);
       await newPost.save();

@@ -1,7 +1,7 @@
 import createError from "http-errors";
 import User from "../model/User";
 import { NextFunction, Request, Response } from "express";
-import bcrypt from "bcryptjs"; // For password hashing
+import bcrypt from "bcryptjs";
 import validateUserData from "../utils/validations/user";
 
 export default class UserController {

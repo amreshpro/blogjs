@@ -8,6 +8,7 @@ import {
 } from "../types";
 import { logger } from "../utils/logging";
 import validatePostData from "../utils/validations/posts";
+import { saveImageBuffer } from "../utils/buffer-to-image";
 
 class PostController {
   // Create a new post
@@ -19,7 +20,11 @@ class PostController {
     logger.info("post create ---");
     console.log(req.body);
     console.log(req.file);
-    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+
+    const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${req.file?.originalname}`;
+    console.log(req.file);
+    const imageUrl = `/uploads/${req.file?.originalname}`;
+    //  req.file ? `/uploads/${req.file.filename}` : null;
     const postData = {
       title: req.body.title,
       content: req.body.content,

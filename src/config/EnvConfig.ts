@@ -1,6 +1,4 @@
-import Bun from "bun";
-
-const Env = Bun.env;
+const Env = Bun.env || process.env;
 
 export default {
   NODE_ENV: Env.NODE_ENV,

@@ -1,4 +1,3 @@
-import Bun from "bun";
 import app from "./src/app";
 import { logger } from "./src/utils/logging";
 import EnvConfig from "./src/config/EnvConfig";
@@ -20,7 +19,7 @@ const startServer = async () => {
         process.exit(1);
       });
   } catch (err) {
-    logger.error("Error happened: ", err.message);
+    logger.error("Error happened: ", err);
     process.exit(1);
   }
 };

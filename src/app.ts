@@ -39,7 +39,32 @@ app.use("/api/v1/auth", authRouter);
 
 // swagger
 app.use(oapi);
-app.use("/", oapi.swaggerui());
+app.use("/docs", oapi.swaggerui());
+app.get(
+  "/",
+  oapi.path({
+    responses: {
+      200: {
+        description: "Successful response",
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                hello: { type: "string" },
+              },
+            },
+          },
+        },
+      },
+    },
+  }),
+  (req, res) => {
+    res.json({
+      hello: "world",
+    });
+  },
+);
 // global error handler ( must be after routes)
 app.use(globalErrorHandler);
 

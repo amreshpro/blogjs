@@ -1,15 +1,33 @@
-# express
+# Blog App
 
-To install dependencies:
+A full-featured blog application built using **MERN Stack**. This app allows users to read, write, and manage blog posts with an intuitive and responsive UI.
 
-```bash
-bun install
-```
+## Features
 
-To run:
+- 📝 Create, edit, and delete blog posts
+- 🔍 Search for posts by title, author, or tags
+- 🖼️ Add images to posts
+- 👤 User authentication (login/signup)
+- 🧑‍💻 Admin panel for managing posts and users
+- 💬 Comments section for user interaction
+- 📱 Fully responsive design
 
-```bash
-bun run index.ts
-```
+## Tech Stack
 
-This project was created using `bun init` in bun v1.1.25. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+- **Frontend**: [React.js | Next.js | Tailwind CSS]
+- **Backend**: [Node.js | Express.js]
+- **Database**: [MongoDB]
+- **Authentication**: [JWT]
+
+## Screenshots
+
+![Homepage](./screenshots/homepage.png)
+![Post Page](./screenshots/post-page.png)
+
+## Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/amreshpro/bloggify.git
+   ```

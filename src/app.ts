@@ -1,5 +1,5 @@
 import express, { urlencoded } from "express";
-import openapi from "@wesleytodd/openapi";
+import swaggerUi from "swagger-ui-express";
 import loggerMiddleware from "./middleware/logger";
 import globalErrorHandler from "./middleware/errors";
 import userRouter from "./routes/user";
@@ -7,17 +7,9 @@ import postRouter from "./routes/post";
 import authRouter from "./routes/auth";
 import path from "path";
 import cors from "cors";
+import swaggerConfig from "./config/swagger";
 
 const app = express();
-
-const oapi = openapi({
-  openapi: "3.0.0",
-  info: {
-    title: "Express Application",
-    description: "Generated docs from an Express api",
-    version: "1.0.0",
-  },
-});
 
 // This will serve the generated json document(s)
 // (as well as the swagger-ui if configured)
@@ -37,34 +29,7 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/post", postRouter);
 app.use("/api/v1/auth", authRouter);
 
-// swagger
-app.use(oapi);
-app.use("/docs", oapi.swaggerui());
-app.get(
-  "/",
-  oapi.path({
-    responses: {
-      200: {
-        description: "Successful response",
-        content: {
-          "application/json": {
-            schema: {
-              type: "object",
-              properties: {
-                hello: { type: "string" },
-              },
-            },
-          },
-        },
-      },
-    },
-  }),
-  (req, res) => {
-    res.json({
-      hello: "world",
-    });
-  },
-);
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerConfig));
 // global error handler ( must be after routes)
 app.use(globalErrorHandler);
 

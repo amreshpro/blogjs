@@ -2,13 +2,13 @@ import { NextFunction, Request, Response } from "express";
 import createError from "http-errors";
 import Post from "../model/Post";
 import {
+  AuthRequest,
   CreatePostRequest,
   DeletePostRequest,
   UpdatePostRequest,
 } from "../types";
 import { logger } from "../utils/logging";
 import validatePostData from "../utils/validations/posts";
-import { saveImageBuffer } from "../utils/buffer-to-image";
 
 class PostController {
   // Create a new post
@@ -52,9 +52,31 @@ class PostController {
   }
 
   // Get all posts
-  static async getAllPosts(req: Request, res: Response, next: NextFunction) {
+  /**
+   * @swagger
+   * /posts:
+   *   get:
+   *     summary: Get all blog posts
+   *     responses:
+   *       200:
+   *         description: Success
+   *       500:
+   *         description: Server Error
+   */
+  static async getAllPosts(
+    req: AuthRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     try {
-      const posts = await Post.find().populate("user", "name email");
+      console.log(req);
+      let posts;
+      if (req.user) {
+        posts = await Post.find({ user: req.user.id });
+      } else {
+        logger.error("Error fetching posts: ");
+        next(createError(500, "Internal Server Error"));
+      }
       res.json({
         status: "success",
         posts,

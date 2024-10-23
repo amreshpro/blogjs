@@ -13,7 +13,6 @@
     "husky": "^9.1.6",
     "jest": "^29.7.0",
     "lint-staged": "^15.2.10",
-    "nodemon": "^3.1.7",
     "prettier": "3.3.3",
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.5"
@@ -36,6 +35,8 @@
     "cors": "^2.8.5",
     "eslint": "^9.13.0",
     "express": "^4.21.1",
+    "express-rate-limit": "^7.4.1",
+    "helmet": "^8.0.0",
     "http-errors": "^2.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.9.0",
@@ -54,8 +55,8 @@
     ]
   },
   "scripts": {
-    "build": "bun build ./index.ts --outdir=dist --minify --bundle",
-    "start": "bun run dist/index.js",
+    "build": "esbuild index.ts --bundle --minify --platform=node --target=node20 --outdir=dist",
+    "start": "bun run ./dist/index.js",
     "dev": "bun run index.ts",
     "lint": "eslint ./*.{js,ts}",
     "format": "prettier . --write ",

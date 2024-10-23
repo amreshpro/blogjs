@@ -17,14 +17,10 @@ class PostController {
     res: Response,
     next: NextFunction,
   ) {
-    logger.info("post create ---");
     console.log(req.body);
     console.log(req.file);
 
-    const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${req.file?.originalname}`;
-    console.log(req.file);
-    const imageUrl = `/uploads/${req.file?.originalname}`;
-    //  req.file ? `/uploads/${req.file.filename}` : null;
+    const imageUrl = req.body.imageUrl ?? `/uploads/${req.file?.originalname}`;
     const postData = {
       title: req.body.title,
       content: req.body.content,

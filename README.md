@@ -19,15 +19,14 @@ A full-featured blog application built using **MERN Stack**. This app allows use
 - **Database**: [MongoDB]
 - **Authentication**: [JWT]
 
-## Screenshots
-
-![Homepage](./screenshots/homepage.png)
-![Post Page](./screenshots/post-page.png)
-
 ## Installation
 
 1. Clone the repository:
 
    ```bash
    git clone https://github.com/amreshpro/blogjs.git
+   ```
+   ```bash
+   bun i
+   bun run dev
    ```
